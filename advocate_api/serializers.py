@@ -6,5 +6,5 @@ from .models import Advocate
 class AdvocateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advocate
-        fields = '__all__'
+        fields = ['username', 'name', 'bio', 'profile_pic', 'twitter']
         
