@@ -20,8 +20,13 @@ def apiOverview(request):
 
 @api_view(['GET'])
 def advocate_list(request):
-    advocate = Advocate.objects.all()
-    serializer = AdvocateSerializer(advocate, many=True)
+    
+    username = request.query_params.get('username')
+    advocates = Advocate.objects.all()
+    if username:
+        advocates = advocates.filter(username__icontains=username)
+        
+    serializer = AdvocateSerializer(advocates, many=True)
     return Response(serializer.data)
 
 
@@ -47,3 +52,12 @@ def advocate_update(request, pk):
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def advocate_delete(request, pk):
+    advocate = Advocate.objects.get(id=pk)
+    advocate.delete()
+    return Response("Adocate Deleted successfully")
+
+
